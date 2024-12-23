@@ -54,6 +54,8 @@ func main() {
 
 	r := mux.NewRouter()
 
+	r.HandleFunc("/health", healthCheck).Methods("GET")
+
 	// Register routes
 	r.HandleFunc("/projects/{name}/links/new", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
@@ -116,8 +118,6 @@ func main() {
 			http.Redirect(w, r, links.Web, http.StatusFound)
 		}
 	}).Methods("GET")
-
-	r.HandleFunc("/health", healthCheck).Methods("GET")
 
 	// Start server
 	log.Println("Server starting on :8080")
