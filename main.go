@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/gorilla/mux"
@@ -14,7 +15,12 @@ import (
 var db *sql.DB
 
 func initDB() *sql.DB {
-	database, err := sql.Open("sqlite3", "./links.db")
+	dbPath := os.Getenv("DATABASE_PATH")
+	if dbPath == "" {
+		dbPath = "./links.db" // Default fallback
+	}
+
+	database, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		log.Fatal(err)
 	}
